@@ -6,11 +6,12 @@
   <title>XPENG Manual Assistant</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    /* --- ธีมมืด (Dark Mode) --- */
     body {
       margin: 0;
       font-family: 'Prompt', sans-serif;
-      background-color: #f5f5f7;
-      color: #333;
+      background-color: #0f1115;
+      color: #e4e6eb;
       display: flex;
       justify-content: center;
       padding-top: 50px;
@@ -22,36 +23,39 @@
       text-align: center;
       padding: 0 20px;
     }
-    h1 { font-size: 32px; font-weight: 500; margin: 0; color: #000; }
+    h1 { font-size: 32px; font-weight: 500; margin: 0; color: #ffffff; }
+    
     .logo-container {
       width: 100%;
       max-width: 480px;
-      height: 180px;
+      height: 160px;
       margin: 20px auto;
-      background: #fff;
+      background: #ffffff;
       border-radius: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
-    .logo-img { max-width: 80%; max-height: 80%; object-fit: contain; }
-    .subtitle { color: #666; font-size: 16px; margin-bottom: 30px; }
+    .logo-img { max-width: 70%; max-height: 70%; object-fit: contain; }
+    .subtitle { color: #8a8d91; font-size: 16px; margin-bottom: 30px; }
     
-    /* ส่วนเลือกโมเดล */
+    /* แถบเลือกรุ่นรถ */
     .config-bar {
       display: flex;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      background: #1c1f26;
+      border: 1px solid #2c303a;
+      border-radius: 8px;
       overflow: hidden;
       margin-bottom: 15px;
     }
     .label-box {
-      background: #f0f0f0;
+      background: #2c303a;
       padding: 12px 20px;
-      border-right: 1px solid #ccc;
+      border-right: 1px solid #3a3f4b;
       font-size: 18px;
+      color: #00c6ff;
+      font-weight: 500;
     }
     .model-select {
       flex-grow: 1;
@@ -60,9 +64,12 @@
       font-family: 'Prompt';
       font-size: 18px;
       outline: none;
+      background: #1c1f26;
+      color: #ffffff;
+      cursor: pointer;
     }
 
-    /* ส่วนค้นหาที่รวมช่องพิมพ์และปุ่มเข้าด้วยกัน */
+    /* ส่วนค้นหา */
     .search-group {
       display: flex;
       gap: 10px;
@@ -71,69 +78,71 @@
     .search-input {
       flex-grow: 1;
       padding: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      border: 2px solid #2c303a;
+      border-radius: 8px;
       font-size: 20px;
       box-sizing: border-box;
       font-family: 'Prompt';
       outline: none;
+      background: #1c1f26;
+      color: #ffffff;
     }
-    .search-input:focus {
-      border-color: #00c6ff;
-    }
-    .search-input::placeholder {
-      color: #aaa;
-      font-style: italic;
-      font-weight: 300;
-    }
+    .search-input:focus { border-color: #00c6ff; }
+    .search-input::placeholder { color: #575d66; font-style: italic; }
+
     .btn-search-main {
       background: #00c6ff;
-      color: white;
+      color: #000000;
       border: none;
       padding: 0 40px;
-      border-radius: 6px;
+      border-radius: 8px;
       font-family: 'Prompt';
       font-size: 20px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
     .btn-search-main:hover {
-      background: #0099cc;
+      background: #00e0ff;
+      box-shadow: 0 0 15px rgba(0, 198, 255, 0.4);
     }
 
-    /* การแสดงผลลัพธ์ */
+    /* ผลลัพธ์ */
     .result-section { text-align: left; }
-    .result-title { font-size: 20px; font-weight: 500; margin-bottom: 15px; }
+    .result-title { font-size: 20px; font-weight: 500; margin-bottom: 15px; color: #ffffff; }
     .result-card {
-      background: white;
-      border: 1px solid #eee;
-      border-radius: 10px;
-      padding: 20px;
+      background: #1c1f26;
+      border: 1px solid #2c303a;
+      border-radius: 12px;
+      padding: 25px;
       margin-bottom: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #2c303a;
+      padding-bottom: 10px;
     }
     .page-num { font-weight: 600; color: #00c6ff; font-size: 18px; }
     .btn-link {
-      background: #f0f0f0;
-      color: #333;
+      background: rgba(0, 198, 255, 0.1);
+      color: #00c6ff;
       text-decoration: none;
-      padding: 6px 14px;
+      padding: 8px 16px;
       border-radius: 6px;
       font-size: 14px;
       font-weight: 500;
-      border: 1px solid #ccc;
+      border: 1px solid rgba(0, 198, 255, 0.3);
+      transition: all 0.2s;
     }
-    .btn-link:hover { background: #e8e8e8; }
-    .content-text { line-height: 1.7; color: #444; font-size: 17px; }
-    mark { background-color: #fff2ac; padding: 0 2px; border-radius: 2px; }
-    .footer { margin-top: 40px; color: #aaa; font-size: 14px; text-align: center; }
+    .btn-link:hover { background: #00c6ff; color: #000000; }
+    
+    .content-text { line-height: 1.8; color: #cfd1d4; font-size: 17px; }
+    mark { background-color: #ffd600; color: #000000; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+    .footer { margin-top: 40px; color: #575d66; font-size: 14px; text-align: center; }
   </style>
 </head>
 <body>
@@ -146,7 +155,7 @@
       <div class="subtitle">by X-tech RAMA2</div>
     </div>
 
-    <!-- แถบเลือกโมเดล -->
+    <!-- แถบเลือกรุ่นรถ -->
     <div class="config-bar">
       <div class="label-box">Model</div>
       <select id="carModel" class="model-select">
@@ -155,7 +164,7 @@
       </select>
     </div>
 
-    <!-- แถบค้นหา: ช่องพิมพ์คำและปุ่มกดอยู่ในบรรทัดเดียวกัน -->
+    <!-- ส่วนค้นหา -->
     <div class="search-group">
       <input type="text" id="searchInput" class="search-input" 
              placeholder="ตัวอย่าง: สติ๊กเกอร์เตือน, การชาร์จ, ระบบช่วยจอด..." 
@@ -171,6 +180,9 @@
   </div>
 
   <script>
+    // --- ตั้งค่าลิงก์ไปยัง Server Render ของคุณ ---
+    const BASE_URL = "https://xpeng.onrender.com";
+
     async function doSearch() {
       const query = document.getElementById('searchInput').value.trim();
       const model = document.getElementById('carModel').value;
@@ -180,10 +192,10 @@
       if (!query) return;
 
       area.style.display = "block";
-      list.innerHTML = "<div style='text-align:center; padding:30px;'>กำลังวิเคราะห์ข้อมูล...</div>";
+      list.innerHTML = "<div style='text-align:center; padding:30px; color: #00c6ff;'>กำลังวิเคราะห์คู่มือออนไลน์...</div>";
 
       try {
-        const response = await fetch('http://127.0.0.1:5000/search', {
+        const response = await fetch(`${BASE_URL}/search`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: query, model: model })
@@ -193,22 +205,23 @@
         list.innerHTML = "";
 
         if (data.error) {
-          list.innerHTML = `<div style="color:red; text-align:center; padding:20px;">${data.error}</div>`;
+          list.innerHTML = `<div style="color:#ff4d4d; text-align:center; padding:20px;">${data.error}</div>`;
         } else if (data.length === 0) {
-          list.innerHTML = `<div style='text-align:center; padding:20px;'>ไม่พบข้อมูลสำหรับ "${query}"</div>`;
+          list.innerHTML = `<div style='text-align:center; padding:20px; color: #8a8d91;'>ไม่พบข้อมูลสำหรับ "${query}"</div>`;
         } else {
           data.forEach(item => {
             const regex = new RegExp(`(${query})`, 'gi');
             const highlightedText = item.text.replace(regex, '<mark>$1</mark>');
             
-            const pdfUrl = `http://127.0.0.1:5000/view/${item.model}#page=${item.page}`;
+            // ลิงก์เปิด PDF ไปยังหน้าที่ระบุ
+            const pdfUrl = `${BASE_URL}/view/${item.model}#page=${item.page}`;
 
             const card = document.createElement('div');
             card.className = 'result-card';
             card.innerHTML = `
               <div class="card-header">
                 <span class="page-num">หน้า ${item.page}</span>
-                <a href="${pdfUrl}" target="_blank" class="btn-link">เปิดดู PDF หน้านี้</a>
+                <a href="${pdfUrl}" target="_blank" class="btn-link">📌 เปิดอ่านคู่มือหน้านี้</a>
               </div>
               <div class="content-text">${highlightedText}</div>
             `;
@@ -216,7 +229,7 @@
           });
         }
       } catch (error) {
-        list.innerHTML = "<div style='color:red; text-align:center; padding:20px;'>❌ การเชื่อมต่อล้มเหลว</div>";
+        list.innerHTML = "<div style='color:#ff4d4d; text-align:center; padding:20px;'>❌ ไม่สามารถเชื่อมต่อกับ Server ได้ (Server อาจกำลังตื่นตัว กรุณารอสักครู่)</div>";
       }
     }
   </script>
