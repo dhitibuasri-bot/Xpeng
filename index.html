@@ -1,237 +1,252 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XPENG Manual Assistant</title>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    /* --- ธีมมืด (Dark Mode) --- */
-    body {
-      margin: 0;
-      font-family: 'Prompt', sans-serif;
-      background-color: #0f1115;
-      color: #e4e6eb;
-      display: flex;
-      justify-content: center;
-      padding-top: 50px;
-      padding-bottom: 80px;
-    }
-    .container {
-      width: 100%;
-      max-width: 800px;
-      text-align: center;
-      padding: 0 20px;
-    }
-    h1 { font-size: 32px; font-weight: 500; margin: 0; color: #ffffff; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XPENG Manual Assistant</title>
     
-    .logo-container {
-      width: 100%;
-      max-width: 480px;
-      height: 160px;
-      margin: 20px auto;
-      background: #ffffff;
-      border-radius: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    }
-    .logo-img { max-width: 70%; max-height: 70%; object-fit: contain; }
-    .subtitle { color: #8a8d91; font-size: 16px; margin-bottom: 30px; }
-    
-    /* แถบเลือกรุ่นรถ */
-    .config-bar {
-      display: flex;
-      background: #1c1f26;
-      border: 1px solid #2c303a;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 15px;
-    }
-    .label-box {
-      background: #2c303a;
-      padding: 12px 20px;
-      border-right: 1px solid #3a3f4b;
-      font-size: 18px;
-      color: #00c6ff;
-      font-weight: 500;
-    }
-    .model-select {
-      flex-grow: 1;
-      border: none;
-      padding: 12px;
-      font-family: 'Prompt';
-      font-size: 18px;
-      outline: none;
-      background: #1c1f26;
-      color: #ffffff;
-      cursor: pointer;
-    }
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    /* ส่วนค้นหา */
-    .search-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-    .search-input {
-      flex-grow: 1;
-      padding: 16px;
-      border: 2px solid #2c303a;
-      border-radius: 8px;
-      font-size: 20px;
-      box-sizing: border-box;
-      font-family: 'Prompt';
-      outline: none;
-      background: #1c1f26;
-      color: #ffffff;
-    }
-    .search-input:focus { border-color: #00c6ff; }
-    .search-input::placeholder { color: #575d66; font-style: italic; }
-
-    .btn-search-main {
-      background: #00c6ff;
-      color: #000000;
-      border: none;
-      padding: 0 40px;
-      border-radius: 8px;
-      font-family: 'Prompt';
-      font-size: 20px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-search-main:hover {
-      background: #00e0ff;
-      box-shadow: 0 0 15px rgba(0, 198, 255, 0.4);
-    }
-
-    /* ผลลัพธ์ */
-    .result-section { text-align: left; }
-    .result-title { font-size: 20px; font-weight: 500; margin-bottom: 15px; color: #ffffff; }
-    .result-card {
-      background: #1c1f26;
-      border: 1px solid #2c303a;
-      border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      border-bottom: 1px solid #2c303a;
-      padding-bottom: 10px;
-    }
-    .page-num { font-weight: 600; color: #00c6ff; font-size: 18px; }
-    .btn-link {
-      background: rgba(0, 198, 255, 0.1);
-      color: #00c6ff;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      border: 1px solid rgba(0, 198, 255, 0.3);
-      transition: all 0.2s;
-    }
-    .btn-link:hover { background: #00c6ff; color: #000000; }
-    
-    .content-text { line-height: 1.8; color: #cfd1d4; font-size: 17px; }
-    mark { background-color: #ffd600; color: #000000; padding: 0 3px; border-radius: 3px; font-weight: 600; }
-    .footer { margin-top: 40px; color: #575d66; font-size: 14px; text-align: center; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>XPENG Manual Assistant</h1>
-      <div class="logo-container">
-        <img src="logo.png" class="logo-img" alt="XPENG Logo" onerror="this.src='https://www.xpeng.com/content/dam/xpeng-site/common/logo/xpeng-logo-black.png'">
-      </div>
-      <div class="subtitle">by X-tech RAMA2</div>
-    </div>
-
-    <!-- แถบเลือกรุ่นรถ -->
-    <div class="config-bar">
-      <div class="label-box">Model</div>
-      <select id="carModel" class="model-select">
-        <option value="G6">XPENG G6</option>
-        <option value="X9">XPENG X9</option>
-      </select>
-    </div>
-
-    <!-- ส่วนค้นหา -->
-    <div class="search-group">
-      <input type="text" id="searchInput" class="search-input" 
-             placeholder="ตัวอย่าง: สติ๊กเกอร์เตือน, การชาร์จ, ระบบช่วยจอด..." 
-             onkeyup="if(event.key==='Enter') doSearch()">
-      <button class="btn-search-main" onclick="doSearch()">ค้นหา</button>
-    </div>
-
-    <div class="result-section" id="resArea" style="display:none;">
-      <div class="result-title">ผลลัพธ์ที่เกี่ยวข้อง</div>
-      <div id="resultsList"></div>
-    </div>
-    <div class="footer">Powered by X-tech Team</div>
-  </div>
-
-  <script>
-    // --- ตั้งค่าลิงก์ไปยัง Server Render ของคุณ ---
-    const BASE_URL = "https://xpeng.onrender.com";
-
-    async function doSearch() {
-      const query = document.getElementById('searchInput').value.trim();
-      const model = document.getElementById('carModel').value;
-      const list = document.getElementById('resultsList');
-      const area = document.getElementById('resArea');
-      
-      if (!query) return;
-
-      area.style.display = "block";
-      list.innerHTML = "<div style='text-align:center; padding:30px; color: #00c6ff;'>กำลังวิเคราะห์คู่มือออนไลน์...</div>";
-
-      try {
-        const response = await fetch(`${BASE_URL}/search`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: query, model: model })
-        });
-
-        const data = await response.json();
-        list.innerHTML = "";
-
-        if (data.error) {
-          list.innerHTML = `<div style="color:#ff4d4d; text-align:center; padding:20px;">${data.error}</div>`;
-        } else if (data.length === 0) {
-          list.innerHTML = `<div style='text-align:center; padding:20px; color: #8a8d91;'>ไม่พบข้อมูลสำหรับ "${query}"</div>`;
-        } else {
-          data.forEach(item => {
-            const regex = new RegExp(`(${query})`, 'gi');
-            const highlightedText = item.text.replace(regex, '<mark>$1</mark>');
-            
-            // ลิงก์เปิด PDF ไปยังหน้าที่ระบุ
-            const pdfUrl = `${BASE_URL}/view/${item.model}#page=${item.page}`;
-
-            const card = document.createElement('div');
-            card.className = 'result-card';
-            card.innerHTML = `
-              <div class="card-header">
-                <span class="page-num">หน้า ${item.page}</span>
-                <a href="${pdfUrl}" target="_blank" class="btn-link">📌 เปิดอ่านคู่มือหน้านี้</a>
-              </div>
-              <div class="content-text">${highlightedText}</div>
-            `;
-            list.appendChild(card);
-          });
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Prompt', 'sans-serif'] },
+                    colors: {
+                        xpeng: {
+                            dark: '#0B0F19',
+                            panel: '#1A202C',
+                            border: '#2D3748',
+                            cyan: '#00D2FF',
+                            cyanHover: '#00A3CC',
+                            amber: '#FFD600'
+                        }
+                    }
+                }
+            }
         }
-      } catch (error) {
-        list.innerHTML = "<div style='color:#ff4d4d; text-align:center; padding:20px;'>❌ ไม่สามารถเชื่อมต่อกับ Server ได้ (Server อาจกำลังตื่นตัว กรุณารอสักครู่)</div>";
-      }
-    }
-  </script>
+    </script>
+
+    <style>
+        body { 
+            background-color: #0B0F19; 
+            color: #E2E8F0; 
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* สไตล์ดั้งเดิม: ช่องค้นหาและปุ่มในบรรทัดเดียวกัน */
+        .search-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 16px 20px;
+            border: 2px solid #2D3748;
+            border-radius: 12px;
+            font-size: 18px;
+            background: #1A202C;
+            color: #ffffff;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: #00D2FF;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+        }
+
+        .btn-search {
+            background: #00D2FF;
+            color: #0B0F19;
+            border: none;
+            padding: 0 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-search:hover {
+            background: #00A3CC;
+            transform: translateY(-2px);
+        }
+
+        /* การแสดงผลการ์ดผลลัพธ์ */
+        .result-card {
+            background: #1A202C;
+            border: 1px solid #2D3748;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2D3748;
+        }
+
+        .page-tag {
+            background: rgba(0, 210, 255, 0.1);
+            color: #00D2FF;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .btn-view-pdf {
+            background: #2D3748;
+            color: #E2E8F0;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn-view-pdf:hover {
+            border-color: #00D2FF;
+            color: #00D2FF;
+        }
+
+        mark {
+            background-color: #FFD600;
+            color: #000000;
+            padding: 0 2px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div class="max-w-4xl mx-auto px-6 py-12 text-center">
+        <!-- Logo & Title Section -->
+        <header class="mb-12">
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-8">XPENG Manual Assistant</h1>
+            <div class="bg-white p-6 rounded-[2rem] shadow-2xl inline-block mb-4">
+                <img src="logo.png" class="h-16 md:h-24 object-contain" alt="XPENG Logo" onerror="this.src='https://www.xpeng.com/content/dam/xpeng-site/common/logo/xpeng-logo-black.png'">
+            </div>
+            <p class="text-gray-500 text-xs tracking-[0.3em] uppercase">by X-Tech RAMA 2</p>
+        </header>
+
+        <!-- Model Selection -->
+        <div class="bg-xpeng-panel border border-xpeng-border rounded-xl flex overflow-hidden mb-6 max-w-sm mx-auto">
+            <div class="bg-xpeng-border px-4 py-3 text-xpeng-cyan text-sm font-bold uppercase">Model</div>
+            <select id="carModel" class="flex-grow bg-transparent px-4 text-white outline-none cursor-pointer font-medium">
+                <option value="G6">XPENG G6</option>
+                <option value="X9">XPENG X9</option>
+            </select>
+        </div>
+
+        <!-- Search Interface (แบบบรรทัดเดียว) -->
+        <div class="search-group">
+            <input type="text" id="searchInput" class="search-input" 
+                   placeholder="ตัวอย่าง: ระบบช่วยจอด, การชาร์จ, ลมยาง..." 
+                   onkeyup="if(event.key==='Enter') doSearch()">
+            <button class="btn-search" onclick="doSearch()">ค้นหา</button>
+        </div>
+
+        <!-- Results Display Area -->
+        <div id="resArea" class="hidden fade-in">
+            <h2 class="text-xl font-medium text-white text-left mb-6">ผลการค้นหาที่เกี่ยวข้อง</h2>
+            <div id="resultsList" class="space-y-4">
+                <!-- ผลลัพธ์จะถูกแทรกที่นี่ -->
+            </div>
+        </div>
+
+        <!-- Default Message -->
+        <div id="statusMsg" class="py-20 text-gray-700 italic">
+            <p>พร้อมค้นหาข้อมูลจาก Cloud Server (xpeng.onrender.com)</p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-24 pt-8 border-t border-xpeng-border/30 text-gray-600">
+            <p class="text-[10px] uppercase tracking-widest font-medium">Powered by X-Tech Team</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- ส่วนการตั้งค่าจุดเชื่อมต่อ SERVER ---
+        const BASE_URL = "https://xpeng-2.onrender.com";
+
+        async function doSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            const model = document.getElementById('carModel').value;
+            const list = document.getElementById('resultsList');
+            const area = document.getElementById('resArea');
+            const status = document.getElementById('statusMsg');
+            
+            if (!query) return;
+
+            // แสดงสถานะการทำงาน
+            status.innerHTML = `<p class="text-xpeng-cyan animate-pulse">กำลังค้นหาข้อมูลเชิงลึก...</p>`;
+            area.classList.remove('hidden');
+            list.innerHTML = "";
+
+            try {
+                const response = await fetch(`${BASE_URL}/search`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query, model: model })
+                });
+
+                const data = await response.json();
+                list.innerHTML = "";
+                status.innerHTML = "";
+
+                if (data.error) {
+                    list.innerHTML = `<div class="p-8 bg-red-900/10 border border-red-500/20 rounded-2xl text-red-400 text-center">${data.error}</div>`;
+                } else if (data.length === 0) {
+                    list.innerHTML = `<div class="p-20 text-center text-gray-500 bg-xpeng-panel rounded-2xl">ไม่พบข้อมูลที่ตรงกับ "${query}"</div>`;
+                } else {
+                    data.forEach(item => {
+                        const regex = new RegExp(`(${query})`, 'gi');
+                        const highlightedText = item.text.replace(regex, '<mark>$1</mark>');
+                        
+                        const pdfUrl = `${BASE_URL}/view/${item.model}#page=${item.page}`;
+
+                        const card = document.createElement('div');
+                        card.className = 'result-card fade-in';
+                        card.innerHTML = `
+                            <div class="card-header">
+                                <span class="page-tag">หน้าที่ ${item.page}</span>
+                                <a href="${pdfUrl}" target="_blank" class="btn-view-pdf">📌 เปิดอ่านไฟล์ PDF</a>
+                            </div>
+                            <div class="text-gray-300 leading-relaxed text-sm md:text-base">${highlightedText}</div>
+                        `;
+                        list.appendChild(card);
+                    });
+                }
+            } catch (error) {
+                list.innerHTML = `
+                    <div class="p-8 bg-red-900/10 border border-red-500/20 rounded-2xl text-red-400 text-center italic text-sm">
+                        ❌ ไม่สามารถเชื่อมต่อกับ Server ได้ในขณะนี้<br>
+                        (กรุณารอประมาณ 30 วินาทีให้ Server ตื่น แล้วลองกดค้นหาใหม่อีกครั้ง)
+                    </div>
+                `;
+            }
+        }
+    </script>
 </body>
 </html>
