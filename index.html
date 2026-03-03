@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XPENG Manual Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* --- โครงสร้างพื้นฐานธีมมืด --- */
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background-color: #0f1115; /* สีพื้นหลังดำเข้ม */
+      color: #e4e6eb; /* สีตัวอักษรขาวเทา */
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+      padding-bottom: 80px;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      padding: 0 20px;
+    }
+    h1 { font-size: 32px; font-weight: 500; margin: 0; color: #ffffff; }
+    
+    /* โลโก้ในพื้นที่สีขาว (คงไว้เพื่อให้โลโก้เด่น) หรือปรับเป็นโปร่งแสง */
+    .logo-container {
+      width: 100%;
+      max-width: 480px;
+      height: 180px;
+      margin: 20px auto;
+      background: #ffffff;
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .logo-img { max-width: 80%; max-height: 80%; object-fit: contain; }
+    .subtitle { color: #8a8d91; font-size: 16px; margin-bottom: 30px; }
+    
+    /* แถบเลือกโมเดล - ธีมมืด */
+    .config-bar {
+      display: flex;
+      background: #1c1f26;
+      border: 1px solid #2c303a;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    .label-box {
+      background: #2c303a;
+      padding: 12px 20px;
+      border-right: 1px solid #3a3f4b;
+      font-size: 18px;
+      color: #00c6ff; /* เน้นสีฟ้า */
+    }
+    .model-select {
+      flex-grow: 1;
+      border: none;
+      padding: 12px;
+      font-family: 'Prompt';
+      font-size: 18px;
+      outline: none;
+      background: #1c1f26;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    /* ส่วนค้นหา - ธีมมืด */
+    .search-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    .search-input {
+      flex-grow: 1;
+      padding: 16px;
+      border: 2px solid #2c303a;
+      border-radius: 8px;
+      font-size: 20px;
+      box-sizing: border-box;
+      font-family: 'Prompt';
+      outline: none;
+      background: #1c1f26;
+      color: #ffffff;
+    }
+    .search-input:focus {
+      border-color: #00c6ff;
+    }
+    .search-input::placeholder {
+      color: #575d66;
+      font-style: italic;
+    }
+    .btn-search-main {
+      background: #00c6ff;
+      color: #000000;
+      border: none;
+      padding: 0 40px;
+      border-radius: 8px;
+      font-family: 'Prompt';
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-search-main:hover {
+      background: #00e0ff;
+      box-shadow: 0 0 15px rgba(0, 198, 255, 0.4);
+    }
+
+    /* การแสดงผลลัพธ์ - ธีมมืด */
+    .result-section { text-align: left; }
+    .result-title { font-size: 20px; font-weight: 500; margin-bottom: 15px; color: #ffffff; }
+    .result-card {
+      background: #1c1f26;
+      border: 1px solid #2c303a;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #2c303a;
+      padding-bottom: 10px;
+    }
+    .page-num { font-weight: 600; color: #00c6ff; font-size: 18px; }
+    .btn-link {
+      background: rgba(0, 198, 255, 0.1);
+      color: #00c6ff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid rgba(0, 198, 255, 0.3);
+      transition: all 0.2s;
+    }
+    .btn-link:hover { 
+      background: #00c6ff; 
+      color: #000000; 
+    }
+    .content-text { line-height: 1.8; color: #cfd1d4; font-size: 17px; }
+    
+    /* ไฮไลต์สีเหลืองให้เด่นบนพื้นดำ */
+    mark { 
+      background-color: #ffd600; 
+      color: #000000; 
+      padding: 0 3px; 
+      border-radius: 3px; 
+      font-weight: 600;
+    }
+
+    .footer { margin-top: 40px; color: #575d66; font-size: 14px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>XPENG Manual Assistant</h1>
+      <div class="logo-container">
+        <img src="logo.png" class="logo-img" alt="XPENG Logo" onerror="this.src='https://www.xpeng.com/content/dam/xpeng-site/common/logo/xpeng-logo-black.png'">
+      </div>
+      <div class="subtitle">by X-tech RAMA2</div>
+    </div>
+
+    <!-- แถบเลือกโมเดล -->
+    <div class="config-bar">
+      <div class="label-box">Model</div>
+      <select id="carModel" class="model-select">
+        <option value="G6">XPENG G6</option>
+        <option value="X9">XPENG X9</option>
+      </select>
+    </div>
+
+    <!-- แถบค้นหา -->
+    <div class="search-group">
+      <input type="text" id="searchInput" class="search-input" 
+             placeholder="ตัวอย่าง: สติ๊กเกอร์เตือน, การชาร์จ, ระบบช่วยจอด..." 
+             onkeyup="if(event.key==='Enter') doSearch()">
+      <button class="btn-search-main" onclick="doSearch()">ค้นหา</button>
+    </div>
+
+    <div class="result-section" id="resArea" style="display:none;">
+      <div class="result-title">ผลลัพธ์ที่เกี่ยวข้อง</div>
+      <div id="resultsList"></div>
+    </div>
+    <div class="footer">Powered by X-tech Team</div>
+  </div>
+
+  <script>
+    async function doSearch() {
+      const query = document.getElementById('searchInput').value.trim();
+      const model = document.getElementById('carModel').value;
+      const list = document.getElementById('resultsList');
+      const area = document.getElementById('resArea');
+      
+      if (!query) return;
+
+      area.style.display = "block";
+      list.innerHTML = "<div style='text-align:center; padding:30px; color: #00c6ff;'>กำลังวิเคราะห์ข้อมูล...</div>";
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: query, model: model })
+        });
+
+        const data = await response.json();
+        list.innerHTML = "";
+
+        if (data.error) {
+          list.innerHTML = `<div style="color:#ff4d4d; text-align:center; padding:20px;">${data.error}</div>`;
+        } else if (data.length === 0) {
+          list.innerHTML = `<div style='text-align:center; padding:20px; color: #8a8d91;'>ไม่พบข้อมูลสำหรับ "${query}"</div>`;
+        } else {
+          data.forEach(item => {
+            const regex = new RegExp(`(${query})`, 'gi');
+            const highlightedText = item.text.replace(regex, '<mark>$1</mark>');
+            
+            const pdfUrl = `http://127.0.0.1:5000/view/${item.model}#page=${item.page}`;
+
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            card.innerHTML = `
+              <div class="card-header">
+                <span class="page-num">หน้า ${item.page}</span>
+                <a href="${pdfUrl}" target="_blank" class="btn-link">📌 เปิดอ่านคู่มือหน้านี้</a>
+              </div>
+              <div class="content-text">${highlightedText}</div>
+            `;
+            list.appendChild(card);
+          });
+        }
+      } catch (error) {
+        list.innerHTML = "<div style='color:#ff4d4d; text-align:center; padding:20px;'>❌ ไม่สามารถเชื่อมต่อกับ Server ได้</div>";
+      }
+    }
+  </script>
+</body>
+</html>
